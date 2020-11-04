@@ -14,33 +14,28 @@
   <div id="app">
     <h1>{{ judul }}</h1>
 
-    <p>{{ belajar('React') }}</p>
+    <p>{{ belajar('Vue JS') }}</p>
 
-    <p>
-      Klik link untuk mengakses
-      <a :href="link">Dokumentasi Vue JS</a>
-    </p>
+    <p>Klik link untuk mengakses <a :href="link">Dokumentasi Vue JS</a></p>
 
-    <div>
-      <input v-model="teks" placeholder="tulis sesuatu..." />
-      <h2>{{ teks }}</h2>
-    </div>
+    <input type="text" v-model="teks">
+    <h2>{{ teks }}</h2>
   </div>
 </body>
 <script>
   new Vue({
     el: "#app",
     data: {
-      judul: "Hello world!", // Deklarasi judul
+      judul: "Hello World!",
       link: "https://vuejs.org/v2/guide/",
-      teks: "",
+      teks: ""
     },
     methods: {
       belajar(pelajaran) {
-        return `Aku sedang belajar ${pelajaran}`;
-      },
-    },
-  });
+        return `Aku sedang belajar ${pelajaran}`
+      }
+    }
+  })
 </script>
 
 </html>

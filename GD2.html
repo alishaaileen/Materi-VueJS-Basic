@@ -17,10 +17,14 @@
       umurku {{ wanita.umur }} tahun dan aku bekerja sebagai seorang {{
         wanita.pekerjaan }}.
       <br />
-      Aku <span v-if="wanita.status == 'menikah'"> Sudah menikah. </span>
+      Aku
+      <span v-if="wanita.status == 'menikah'">
+        Sudah menikah.
+      </span>
       <span v-else-if="wanita.status == 'belum menikah'">
         masih lajang hehe
       </span>
+
     </p>
 
     <div>
@@ -32,12 +36,14 @@
     <ul v-for="(skill, index) in wanita.skills" :key="index">
       <li>{{skill}}</li>
     </ul>
+
   </div>
 </body>
 <script>
   new Vue({
     el: "#app",
     data: {
+      makanan: ["cemplon", "tempe", "ayam geprek"],
       wanita: {
         nama: "Karen",
         umur: 20,
@@ -48,13 +54,10 @@
     },
     methods: {
       tambahUmur() {
-        this.wanita.umur == 25 ? alert("umur sudah 25") : this.wanita.umur++
+        this.wanita.umur++
       },
       kurangiUmur() {
-        if (this.wanita.umur == 18)
-          alert("umur sudah 18")
-        else
-          this.wanita.umur--;
+        this.wanita.umur--;
       },
     },
   });
