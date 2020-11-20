@@ -1,14 +1,172 @@
+<!-- @format -->
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UGD Modul 8</title>
+  <script src="./vue.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css" />
 </head>
+<style>
+  .header {
+    height: 300px;
+  }
+
+  .margin-top {
+    margin-top: 10px;
+  }
+
+  p {
+    margin-top: 20px !important;
+  }
+
+  .notice {
+    margin-top: 100px;
+  }
+
+  .text-black {
+    color: hsl(0, 0%, 21%) !important;
+  }
+
+  .card-wrapper {
+    width: 600px;
+    position: relative;
+    margin: 0 auto;
+  }
+
+  .card {
+    width: 600px;
+    padding: 20px 0;
+    position: absolute;
+    top: -150px;
+  }
+</style>
 
 <body>
+  <div id="app" class="has-text-centered">
+    <section class="hero section header is-primary is-bold"></section>
 
+    <div class="card-wrapper">
+      <div class="card">
+        <div class="card-content">
+          <h1 class="title is-2 text-black">🤔 Tebak Angka! 🤔</h1>
+          <p class="subtitle text-black">Tebaklah angka dari 1-10</p>
+
+          <!-- Bagian :disabled terdapat binding. Baca : Data Binding Vue JS -->
+          <input v-model="guess" class="input" type="text" placeholder="Kira-kira berapa ya?"
+            :disabled="counter == 0 || isNoticeActive" />
+          <button class="button is-info margin-top" @click="checkNumberGuess"
+            :disabled="counter == 0 || isNoticeActive">
+            Tebak
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <section class="section is-medium">
+      <div class="container">
+        <div class="notice">
+          <div v-if="isNoticeActive && isGuessTrue && counter>=0">
+            <h1 class="title">🎉 Tebakan kamu benar! 🎉</h1>
+            <p class="subtitle">Angkanya adalah {{ number }} 😎👍</p>
+            <button class="button is-warning" @click="reset">
+              Main lagi
+            </button>
+          </div>
+
+          <div v-else-if="isNoticeActive && !isGuessTrue && counter>0">
+            <h1 class="title is-3">Tebakan kamu salah! 👀</h1>
+            <p class="subtitle">
+              Kamu masih punya {{ counter }} kesempatan lagi
+            </p>
+            <button class="button is-warning" @click="isNoticeActive = false">
+              Tebak lagi
+            </button>
+          </div>
+
+          <div v-else-if="isNoticeActive">
+            <h1 class="title is-3">Kesempatan kamu habis!</h1>
+            <p class="subtitle">Jawabannya adalah {{ number }}</p>
+            <img src="./8301c2ebcbd6d40d78082b0254fee71a.png" width="300" />
+            <br>
+            <button class="button is-dark" @click="reset">Main lagi</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="subtitle is-6">
+        {{ Evan.nama }} | {{ Evan.npm }} | {{ Evan.kelas }}
+      </p>
+    </footer>
+  </div>
 </body>
+<script>
+  new Vue({
+    name: "UGD",
+    el: "#app",
+    data: {
+      number: null,
+      guess: null,
+      counter: 3,
+      isGuessTrue: null,
+      isNoticeActive: false,
+      Evan: {
+        nama: "Evan You",
+        npm: "170709999",
+        kelas: "PAW F",
+      },
+    },
+
+
+    // mounted adalah salah satu siklus hidup Vue JS.
+    // mounted merupakan fungsi yang dijalankan
+    // tepat sebelum tampilan di-render.
+    // === baca : Vue JS Lifecycle ===
+
+    mounted() {
+      // Menentukan angka acak sebelum game dimulai
+      this.number = this.getRandomNumber();
+
+      // Menampilkan angka acak di console browser
+      console.log(this.number);
+    },
+
+
+    methods: {
+      getRandomNumber() {
+        return Math.floor(Math.random() * 10) + 1;
+      },
+      checkNumberGuess() {
+        if (this.counter > 0) {
+          this.counter--;
+          this.isNoticeActive = true;
+
+          // Jika tebakan sesuai dengan angka acak, maka
+          // isGuessTrue akan bernilai true dan sebaliknya
+          // === baca : conditional (ternary) operator ===
+          this.isGuessTrue = this.number === parseInt(this.guess) ? true : false;
+        }
+      },
+      reset() {
+        // Mengacak ulang angka
+        this.number = this.getRandomNumber();
+        
+        // Menampilkan ulang di console browser
+        console.log(this.number);
+
+        // Mengembalikan data ke keadaan semula
+        this.guess = null;
+        this.counter = 3;
+        this.isGuessTrue = null;
+        this.isNoticeActive = false;
+      },
+    },
+  });
+</script>
 
 </html>
