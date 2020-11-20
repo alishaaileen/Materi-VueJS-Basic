@@ -2,13 +2,167 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UGD Modul 8</title>
+  <script src="./vue.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 </head>
+<style>
+  .margin-top {
+    margin-top: 10px;
+  }
+
+  p {
+    margin-top: 20px !important;
+  }
+
+  .text-black {
+    color: hsl(0, 0%, 21%) !important;
+  }
+
+  .card {
+    width: 600px;
+    position: relative;
+    margin: 0 auto 10px auto;
+  }
+
+  .todo-list {
+    height: 500px;
+    width: 600px;
+    margin: 10px auto;
+    overflow-y: auto;
+  }
+
+  .delete {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+</style>
 
 <body>
+  <div id="app" class="has-text-centered">
+    <section class="hero section is-fullheight is-primary is-bold">
+      <h1 class="title is-1">To Do List 📝</h1>
 
+      <div class="todo-list">
+        <div class="card" v-for="(todo, i) in todos" :key="i">
+          <div class="card-content has-text-left">
+
+            <!-- Hasil getDayColor() akan di-concat dengan 'is-' -->
+            <!-- sehingga menghasilkan class sesuai warna prioritas -->
+            <span :class="`tag is-light is-${getDayColor(todo.urgency)}`">{{ todo.urgency }}</span>
+            
+            <h1 class="title text-black">{{ todo.job }}</h1>
+            <p class="subtitle is-6 text-black">{{ todo.note }}</p>
+          </div>
+          <button class="delete" aria-label="close" @click="removeTodo(i)"></button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content has-text-left">
+
+          <div class="field">
+            <label class="label">Apa yang mau kamu kerjakan?</label>
+            <div class="control">
+              <input v-model="newTodo.job" class="input" type="text">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Penting gak?</label>
+            <div class="control">
+              <div class="select">
+                <select v-model="newTodo.urgency">
+                  <option v-for="urgency in urgencies" :key="urgency">{{ urgency }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Ada catatan penting?</label>
+            <div class="control">
+              <textarea class="textarea" v-model="newTodo.note"></textarea>
+            </div>
+          </div>
+
+          <button class=" button is-dark" @click="resetNewTodo">Reset</button>
+          <button class="button is-success" @click="saveNewTodo">Simpan</button>
+
+        </div>
+      </div>
+
+      <footer>
+        <p class="subtitle is-6">
+          {{ Evan.nama }} | {{ Evan.npm }} | {{ Evan.kelas }}
+        </p>
+      </footer>
+    </section>
+  </div>
 </body>
+<script>
+  new Vue({
+    name: "UGD",
+    el: "#app",
+    data: {
+      Evan: {
+        nama: "Evan You",
+        npm: "170709999",
+        kelas: "PAW F"
+      },
+      urgencies: ["Penting", "Biasa", "Tidak penting"],
+      todos: [{
+          job: "Melayani dalam cahaya kebenaran",
+          urgency: "Penting",
+          note: "Servienz"
+        },
+        {
+          job: "berkebun",
+          urgency: "Biasa",
+          note: "memakai outfit berkebun"
+        },
+        {
+          job: "Tertawa",
+          urgency: "Tidak penting",
+          note: "Xixixixixixixi"
+        },
+        {
+          job: "Lorem ipsum",
+          urgency: "Penting",
+          note: "Dolor sit amet"
+        }
+      ],
+      newTodo: {}
+    },
+    methods: {
+      getDayColor(day) {
+        // di Bulma, class 'is-danger' adalah warna merah
+        if (day === "Penting") return "danger";
+        // di Bulma, class 'is-info' adalah warna biru
+        else if (day === "Biasa") return "info";
+        // di Bulma, class 'is-success' adalah warna hijau
+        else if (day === "Tidak penting") return "success";
+      },
+      resetNewTodo() {
+        this.newTodo = {
+          job: "",
+          urgency: "",
+          note: ""
+        }
+      },
+      saveNewTodo() {
+        this.todos.push(this.newTodo)
+
+        this.resetNewTodo()
+      },
+      removeTodo(index) {
+        this.todos.splice(index, 1)
+      }
+    }
+  })
+</script>
 
 </html>
